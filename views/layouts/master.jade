@@ -1,6 +1,19 @@
 doctype
 html
+    head
+        title=title
+        link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+        link(rel='stylesheet', href='/stylesheets/clean-blog.min.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
     body
-        include ../shared/navbar
-        include ../shared/footer
+        include /shared/navbar
+        header.intro-header
+            div.container
+                div.row
+                    div.col-lg-8.col-lg-offset.col-md-10.col-md-offset-1
+                        div.site-heading
+                            h1 Mavericks Inc. Movie Blog
+                            hr.small
+                            span.subheading This is the fucking subheading
         block content
+        include /shared/footer
