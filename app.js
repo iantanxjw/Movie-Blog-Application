@@ -20,6 +20,10 @@ require("dotenv").config();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+/* set the root dir for jade to views - 
+  don't need to provide rel path anymore! */
+app.locals.basedir = app.get("views");
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
