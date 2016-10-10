@@ -1,0 +1,13 @@
+extends /layouts/master
+
+block content
+    div.container
+        div.row
+            div.col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
+
+                p Simple dotenv variable page to check if you installed dependencies correctly. You don't need to restart the node server to change jade pages!!
+
+                p API key: #{key}
+                p Database host: #{host}
+                p Database port: #{port}
+                p Database name: #{db}
