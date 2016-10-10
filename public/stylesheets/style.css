@@ -1,7 +1,6 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-a {
-  color: #00b7ff;
+.intro-header {
+  background: center center no-repeat;
+  background-size: cover;
+  margin-buttom: 50px;
+  background-image: url("/images/placeholder.jpg");
 }
