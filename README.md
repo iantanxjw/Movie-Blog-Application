@@ -7,7 +7,7 @@ The project itself is a movie blogs website with the ability for guests and regi
 Contributors
 --------------------------------
 * Ben
-* Ian
+* Ian (the mightiest noob)
 * Nancy
 * Ivan
-* Anthony (the biggest noob)
+* Anthony (the biggest noob), Plox 
