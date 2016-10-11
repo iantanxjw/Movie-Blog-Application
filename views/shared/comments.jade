@@ -1,0 +1,19 @@
+#respond
+    div.centered
+        h3 Leave a Comment
+        hr
+
+        form#commentform(action='#', method='post')
+            label.required(for='comment_author') Your name
+            input#comment_author(type='text', name='comment_author', value='', tabindex='1', required='required')
+            br
+            label.required(for='email') Your email
+            input#email(type='email', name='email', value='', tabindex='2', required='required')
+            br
+            label.required(for='comment') Your message
+            textarea#comment(name='comment', rows='10', tabindex='4', required='required')
+            br
+
+        input#comment_post_ID(type='hidden', name='comment_post_ID', value='1')
+        button.btn(name='submit', type='submit', value='Submit comment') Submit Comment
+
