@@ -16,6 +16,14 @@ var app = express();
 // environment plugin - make sure to add a .env in your dir!
 require("dotenv").config();
 
+// database
+var mongoose = require("mongoose");
+mongoose.connect(
+  "mongodb://" + process.env.DB_HOST +
+  ":" + process.env.DB_PORT + 
+  "/" + process.env.DB_NAME
+);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
