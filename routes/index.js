@@ -11,10 +11,8 @@ router.get("/", function(req, res, next) {
     res.render("index", {title: "Home"});
 });
 
-
-
-router.get('/admin', function(req, res, next) {
-    res.render('admin', {title: "admin"});
+router.get("/admin", function(req, res, next) {
+    res.render("admin", {title: "admin"});
 });
 
 // TEMPORARY
