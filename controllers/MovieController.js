@@ -86,6 +86,24 @@ exports.delete = function(req, res) {
     });
 }
 
+exports.randomMovie = function(req, res) {
+    
+    Movie.count().exec(function(err, count) {
+        var random = Math.floor(Math.random() * count);
+        console.log(random);
+
+        Movie.findOne().skip(random).exec(function(err, movie) {
+            if (err) {
+                console.log(err);
+            }
+
+            console.log(movie);
+            res.json(movie);
+        });
+
+    });
+}
+
 exports.apiRequest = function(req, res) {
 
     // create a get request - Make sure you put the correct vars in your .env!
