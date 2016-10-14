@@ -37,12 +37,6 @@ a.navbar-brand {
   letter-spacing: 2px;
 }
 
-#bs-example-navbar-collapse-1.collapse.navbar-collapse{
-  font-family: 'Hammersmith One', Serif;
-  font-size: 50px;
-  letter-spacing:2px;
-}
-
 .intro-header {
   background: center center no-repeat;
   background-size: cover;
@@ -80,7 +74,16 @@ a.navbar-brand {
   margin-left: 25%;
 }
 
-button {
+.button span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button {
   background-color: #204478; /* Green */
   border: none;
   color: #eeeeee;
@@ -127,6 +130,10 @@ button {
 .button:hover span:after {
   opacity: 1;
   right: 0;
+}
+
+a {
+  cursor: pointer;
 }
 
 
