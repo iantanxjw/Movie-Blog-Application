@@ -6,15 +6,16 @@ html
         link(rel='stylesheet', href='/stylesheets/clean-blog.min.css')
         link(rel='stylesheet', href='/stylesheets/style.css')
     body
-        include /shared/navbar
-        header.intro-header
-            div.container
-                div.row
-                    div.col-lg-offset.col-md-10.col-md-offset-1
-                        div.site-heading
-                            h1 Mavericks Inc. Blog
-                            hr.small
-                            span.subheading Made by Manthony Industries Inc. for Mavericks Inc.
-        block content
-        include /shared/comments
-        include /shared/footer
+        #wrapper
+            include /shared/navbar
+            header.intro-header
+                div.container
+                    div.row
+                        div.col-lg-offset.col-md-10.col-md-offset-1
+                            div.site-heading
+                                h1 Mavericks Inc. Blog
+                                hr.small
+                                h3 Made by Manthony Industries Inc. for Mavericks Inc.
+            block content
+            include /shared/comments
+            include /shared/footer
