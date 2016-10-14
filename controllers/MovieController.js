@@ -1,56 +1,89 @@
-var mongoose = require("mongoose");
 var httpModule = require("http");
-var movieSchema = require("../database/movieSchema");
-var Movie = mongoose.model("Movie", movieSchema);
+var Movie = require("../models/Movie");
+var Post = require("../models/Post");
 
 exports.show = function(req, res) {
+    Movie.find({id: req.params.mv_id}, function(err, movie) {
+        if (err) {
+            console.log(err);
+            res.json({message: "Could not find movie with the id: " + req.params.mv_id});
+        }
+
+        res.json(movie);
+    })
+}
+
+exports.showAll = function(req, res) {
     Movie.find({}, function(err, movies) {
         if (err) {
             console.log(err);
             return;
         }
 
-        res.render("movie.jade", {movies: movies});
+        res.json(movies);
     });
 }
 
 exports.create = function(req, res) {
-    // var heat = new Movie({
-    //     mv_id: "1111",
-    //     title: "Heat",
-    //     desc: "My favourite movie",
-    //     genre: "Action, Crime, Drama",
-    //     voteAvg: 9,
-    //     poster: "",
-    //     bg: ""
-    // });
+    var movie = new Movie({
+        id: req.body.id,
+        title: req.body.title,
+        desc: req.body.desc,
+        genre: req.body.genre,
+        voteAvg: req.body.voteAvg,
+        poster: req.body.poster,
+        bg: req.body.bg
+    });
 
-    // heat.save(function(err) {
-    //     if (err) return handleError(err);
-    // });
+    movie.save(function(err) {
+        if (err) {
+            console.log(err);
+            res.json({error: "Could not create: " + req.body.title});
+        }
 
-    // var rushhour = new Movie({
-    //     mv_id: "2222",
-    //     title: "Rush Hour",
-    //     desc: "I've been lookin' for yo sweet and sour chicken ass",
-    //     voteAvg: 8,
-    //     poster: "",
-    //     bg: ""
-    // });
-
-    // rushhour.save(function(err) {
-    //     if (err) return handleError(err);
-    // });
-
-    res.redirect("/movie/show"); 
+        res.json({success: "Successfully created: " + movie.title});
+    });
 }
 
-exports.edit = function(req, res) {
-    res.render("movie.jade", {text: "edit a movie"});
+exports.update = function(req, res) {
+    Movie.findOne({id: req.params.mv_id}, function(err, movie) {
+        if (err) {
+            console.log(err);
+            res.json({error: "Could not find movie with the id: " + req.params.mv_id});
+        }
+
+        console.log(movie);
+
+        movie.title = req.body.title;
+        movie.desc = req.body.desc;
+        //movie.genre = req.body.genre;
+        movie.voteAvg = req.body.voteAvg;
+        movie.poster = req.body.poster;
+        movie.bg = req.body.bg;
+
+        movie.save(function(err) {
+            if (err) {
+                console.log(err);
+                res.json({error: "Could not update " + movie.title});
+            }
+
+            res.json({success: "Successfully updated " + movie.title});
+        })
+    })
 }
 
 exports.delete = function(req, res) {
-    res.render("movie.jade", {text: "delete a movie"});
+    Movie.remove({id: req.params.mv_id}, function(err, movie) {
+        if (err) {
+            console.log(err);
+            res.json({error: "Could not delete movie with the id: " + req.params.mv_id});
+        }
+
+        // now delete both the post and comments
+
+
+        res.json({success: req.params.mv_id + " deleted successfully"});
+    });
 }
 
 exports.apiRequest = function(req, res) {
@@ -75,14 +108,17 @@ exports.apiRequest = function(req, res) {
 
             // loop the data and insert it into the db
             var json = JSON.parse(string);
-            var movies = [];
+            var genreJson = apiGenreRequest();
+            var success = [];
+            var failure = [];
+            var updated = [];
 
             for (var i = 0; i < json.items.length; i++) {
                 var movie = new Movie({
-                    mv_id: json.items[i].id,
+                    id: json.items[i].id,
                     title: json.items[i].title,
                     desc: json.items[i].overview,
-                    genre: getGenreNames(json.items[i].genre_ids),
+                    //genre: getGenreNames(json.items[i].genre_ids, genreJson),
                     voteAvg: json.items[i].vote_average,
                     poster: process.env.TMDB_API_IMG_URL + "/w342" + json.items[i].poster_path,
                     bg: process.env.TMDB_API_IMG_URL + "/w1280" + json.items[i].backdrop_path
@@ -90,11 +126,16 @@ exports.apiRequest = function(req, res) {
 
                 // now try to insert
                 movie.save(function(err) {
-                    if (err) console.log(err);
+                    if (err) {
+                        console.log(err);
+                        failure.push(movie.title);
+                    }
+
+                    success.push(movie.title);
                 });
             }
 
-            res.redirect("/movie/show");
+            res.json(success, failure, updated);
         });
     }
 
@@ -103,11 +144,11 @@ exports.apiRequest = function(req, res) {
 }
 
 // private funcs
-function getGenreNames(genreIDs) {
+function apiGenreRequest() {
     // send another request to the api for genre names
     var options = {
         host: process.env.TMDB_API_HOST,
-        path: process.env.TMDB_API_GENRE_PATH
+        path: process.env.TMDB_API_GENRE_PATH + "?api_key=" + process.env.TMDB_API_KEY
     }
 
     callback = function(response) {
@@ -118,30 +159,35 @@ function getGenreNames(genreIDs) {
         });
 
         response.on("end", function() {
-            var json = JSON.parse(string);
-            var genreNameArray = [];
-
-            for (var i = 0; i < json.genres.length; i++) {
-                for (var j = 0; j < genreIDs.length; i++) {
-
-                    // if ids are equal, add to the name array
-                    if (genreIDs[j] === json.genres[i].id) {
-                        genreNameArray.push(json.genres[i].name);
-                    }
-
-                    // break if all ids have been found
-                    if (genreNameArray.length === genreIDs.length) {
-
-                        // return a comma delimited string
-                        return genreNameArray.join(", ");
-                    }
-                }
-            }
-
-            // should never get here but just in case
-            return genreNameArray.join(", ");
+            return JSON.parse(string);
         });
     }
 
     httpModule.request(options, callback).end();
+}
+
+
+function getGenreNames(genreIDs, json) {
+    var genreNameArray = [];
+    console.log(json);
+
+    for (var i = 0; i < json.genres.length; i++) {
+        for (var j = 0; j < genreIDs.length; i++) {
+
+            // if ids are equal, add to the name array
+            if (genreIDs[j] === json.genres[i].id) {
+                genreNameArray.push(json.genres[i].name);
+            }
+
+            // break if all ids have been found
+            if (genreNameArray.length === genreIDs.length) {
+
+                // return a comma delimited string
+                return genreNameArray.join(", ");
+            }
+        }
+    }
+
+    // should never get here but just in case
+    return genreNameArray.join(", ");
 }
