@@ -11,13 +11,17 @@ router.get("/", function(req, res, next) {
     res.render("index", {title: "Home"});
 });
 
-router.get("/admin", function(req, res, next) {
+router.get('/admin', function(req, res, next) {
     res.render("admin", {title: "admin"});
 });
 
 // TEMPORARY
 router.get("/movie/apiupdate", function(req, res) {
     controllers.MovieController.apiRequest(req, res);
+});
+
+router.get("/movie/random", function(req, res) {
+    controllers.MovieController.randomMovie(req, res);
 });
 
 
