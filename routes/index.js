@@ -12,7 +12,7 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/admin", function(req, res, next) {
-    res.render("admin", {title: "admin"});
+    res.render("admin", {title: "Admin"});
 });
 
 // TEMPORARY
