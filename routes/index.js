@@ -11,7 +11,7 @@ router.get("/", function(req, res, next) {
     res.render("index", {title: "Home"});
 });
 
-router.get('/admin', function(req, res, next) {
+router.get("/admin", function(req, res, next) {
     res.render("admin", {title: "admin"});
 });
 
@@ -96,6 +96,11 @@ router.route("/comment")
     });
 
 router.route("/comment/:comment_id")
+    // get all comments for a post
+    .get(function(req, res) {
+        controllers.CommentController.findCommentsForPost(req, res);
+    })
+
     // delete comment
     .delete(function(req, res) {
         controllers.CommentController.delete(req, res);
