@@ -138,3 +138,7 @@ a {
 
 
 
+/* ADMIN */
+#create-post {
+  display: none;
+}
