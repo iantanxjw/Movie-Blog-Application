@@ -3,7 +3,7 @@ var Movie = require("../models/Movie");
 var Post = require("../models/Post");
 
 exports.show = function(req, res) {
-    Movie.find({id: req.params.mv_id}, function(err, movie) {
+    Movie.findOne({id: req.params.mv_id}, function(err, movie) {
         if (err) {
             console.log(err);
             res.json({message: "Could not find movie with the id: " + req.params.mv_id});
