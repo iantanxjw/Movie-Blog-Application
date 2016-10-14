@@ -1,19 +1,16 @@
 extends /layouts/master
 
 block content
-    .container
-        .row
-            .col-lg-8.col-lg-offset-2.col-md-10.col-md-offset-1
-                - for (var i = 0; i < movies.length; i++)
-                    .post-preview
-                        a(href="#")
-                            h2.post-title
-                                | #{movies[i].title}
-                            h3.post-subtitle
-                                //- trail off the movie overview
-                                | #{movies[i].desc.substr(0, 100) + "... "}
-                        p.post-meta
-                            | Created by
-                            a(href="#") Me
-                            | on lol
-                    hr
+    - for (var i = 0; i < movies.length; i++)
+        .post-preview
+            a(href="#")
+                h2.post-title
+                    | #{movies[i].title}
+                h3.post-subtitle
+                    //- trail off the movie overview
+                    | #{movies[i].desc.substr(0, 100) + "... "}
+            p.post-meta
+                | Created by
+                a(href="#") Me
+                | on lol
+        hr
