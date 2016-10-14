@@ -97,7 +97,6 @@ exports.randomMovie = function(req, res) {
                 console.log(err);
             }
 
-            console.log(movie);
             res.json(movie);
         });
 
