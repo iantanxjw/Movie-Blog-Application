@@ -67,3 +67,14 @@ exports.delete = function(req, res) {
         })
     })
 }
+
+exports.findCommentsForPost = function(req, res) {
+    Comment.find({post_id: req.params.comment_id}, function(err, comments) {
+        if (err) {
+            console.log(err);
+            res.json({error: "Could not find any comments for: " + req.params.comment_id});
+        }
+
+        res.json(comments);
+    });
+}
