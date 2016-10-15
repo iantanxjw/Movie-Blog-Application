@@ -26,7 +26,8 @@ $(function() {
 
     $("#update").click(function() {
         $.get("/movie/apiupdate", function(data) {
-            $(".col-lg-8").append(data.success);
-        })
+            // this doesn't fucking work because .save() is async fml
+            $("#update").notify(data);
+        });
     })
 });

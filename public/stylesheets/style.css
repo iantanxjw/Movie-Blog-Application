@@ -148,7 +148,9 @@ a {
   cursor: pointer;
 }
 
-
+.post-expand {
+  display: none;
+}
 
 /* ADMIN */
 #create-post {
