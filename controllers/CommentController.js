@@ -20,8 +20,13 @@ var validation = {
 }
 
 exports.create = function(req, res) {
+    // validate input according to the validation schema above
     req.check(validation);
     var errors = req.validationErrors();
+
+    // sanitise user input
+    req.sanitize("author").escape().trim();
+    req.sanitize("text").escape();
 
     if (errors) {
         res.json({success: false, errors: errors});
