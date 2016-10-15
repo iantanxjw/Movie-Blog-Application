@@ -12,8 +12,6 @@ h1 {
   letter-spacing: 2px;
   text-align: center;
   margin:auto;
-  /*font-family: 'Bungee Inline', cursive;
-  */
   color: #eeeeee;
   font-family: 'Hammersmith One', Serif;
 }
@@ -22,10 +20,12 @@ label {
   font-family: 'Source Sans Pro', sans-serif;
   letter-spacing:1px;
 }
+
 @keyframes fadein{
   from{opacity:0;}
   to{opacity:1;}
 }
+
 #wrapper{
   animation: fadein 1.5s;
 }
@@ -48,7 +48,7 @@ a.navbar-brand {
   background: center center no-repeat;
   background-size: cover;
   margin-button: 50px;
-  background-image: url("/images/placeholder.jpg");
+  background-image: url("../images/placeholder.jpg");
   font-family: 'Roboto Slab', serif;
   text-align: center;
   margin:auto;
@@ -207,14 +207,17 @@ body {
   -webkit-transition-duration: 0.4s; /* Safari */
   transition-duration: 1.0s;
   cursor: pointer;
-
 }
 
 .button1 {
-  font-family: 'Roboto Slab', serif;
+  margin:2%;
+  font-family: 'Acme', sans-serif;
   background-color: white;
   color: black;
   border: 2px solid #4CAF50;
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
 }
 
 .button1:hover {
@@ -223,10 +226,13 @@ body {
 }
 
 .button2 {
-  font-family: 'Roboto Slab', serif;
+  font-family: 'Acme', sans-serif;
   background-color: white;
   color: black;
   border: 2px solid #008CBA;
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
 }
 
 .button2:hover {
