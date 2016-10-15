@@ -3,31 +3,42 @@
 @import url('https://fonts.googleapis.com/css?family=Patrick+Hand');
 @import url('https://fonts.googleapis.com/css?family=Nothing+You+Could+Do');
 @import url('https://fonts.googleapis.com/css?family=Bungee+Shade');
+@import url('https://fonts.googleapis.com/css?family=Acme');
+@import url('https://fonts.googleapis.com/css?family=Comfortaa');
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+html {
+  min-height: 100%;
+}
 
 h1 {
   text-transform: uppercase;
   letter-spacing: 2px;
   text-align: center;
   margin:auto;
-  /*font-family: 'Bungee Inline', cursive;
-  */
-  font-family: 'Bungee Shade', cursive;
+  color: #eeeeee;
+  font-family: 'Hammersmith One', Serif;
 }
 
 label {
   font-family: 'Source Sans Pro', sans-serif;
   letter-spacing:1px;
 }
+
 @keyframes fadein{
   from{opacity:0;}
   to{opacity:1;}
 }
+
 #wrapper{
   animation: fadein 1.5s;
 }
 
-h3 {
-  font-family: 'Source Sans Pro', sans-serif;
+h2 {
+  font-family: 'Acme', sans-serif;
+}
+h4 {
+  font-family: 'Nunito', serif;
   letter-spacing:2px;
 }
 
@@ -38,13 +49,14 @@ a.navbar-brand {
 }
 
 .intro-header {
-  background: center center no-repeat;
-  background-size: cover;
-  margin-button: 50px;
-  background-image: url("/images/placeholder.jpg");
-  font-family: 'Roboto Slab', serif;
+  background: no-repeat center center fixed;
   text-align: center;
-  margin:auto;
+  min-height:100%;
+  min-width: 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 100% 100%;
 }
 
 /****** Comments ******/
@@ -142,3 +154,80 @@ a {
 #create-post {
   display: none;
 }
+
+/* Google like cards box */
+body {
+  background: #e2e1e0;
+  text-align: center;
+}
+
+.card {
+  background: #fff;
+  font-family: 'Source Sans Pro', sans-serif;
+  border-radius: 15px;
+  display: inline-block;
+  height: auto;
+  margin: 1rem;
+  position: relative;
+
+}
+
+.card-1 {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  width: auto;
+}
+
+.card-1:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+/* Admin buttons */
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 1.0s;
+  cursor: pointer;
+}
+
+.button1 {
+  margin:2%;
+  font-family: 'Acme', sans-serif;
+  background-color: white;
+  color: black;
+  border: 2px solid #4CAF50;
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+
+.button1:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.button2 {
+  font-family: 'Acme', sans-serif;
+  background-color: white;
+  color: black;
+  border: 2px solid #008CBA;
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+
+.button2:hover {
+  background-color: #008CBA;
+  color: white;
+}
+
+
+

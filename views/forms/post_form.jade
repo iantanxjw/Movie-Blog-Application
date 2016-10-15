@@ -1,16 +1,18 @@
 form(action="/post", method="post")#create-post
-    .col-xs-12.col-sm-12.col-md-12
-        .form-group
-            label(for="title") Post title:
-            input(type="text", name="title")
-    .col-xs-12.col-sm-12.col-md-12
-        .form-group
-            label(for="mv_id") About movie:
-            select(name="mv_id")
-    .col-xs-12.col-sm-12.col-md-12
-        .form-group
-            label(for="author") Author:
-            input(type="text", name="author")
-    .col-xs-12.col-sm-12.col-md-12
-        .form-group
-            button(type="submit") Submit
+    .card.card-1
+        .col-xs-12.col-sm-12.col-md-12
+            .form-group
+                br
+                label(for="title") Post title :
+                input(type="text", name="title")
+        .col-xs-12.col-sm-12.col-md-12
+            .form-group
+                label(for="mv_id") About movie :
+                select(name="mv_id")
+        .col-xs-12.col-sm-12.col-md-12
+            .form-group
+                label(for="author") Author :
+                input(type="text", name="author")
+        .col-xs-12.col-sm-12.col-md-12
+            .form-group
+                button.btn-primary(type="submit") Submit

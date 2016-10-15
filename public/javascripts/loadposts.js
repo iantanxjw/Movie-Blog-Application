@@ -1,7 +1,7 @@
 $.get("/post", function(posts) {
     $.each(posts, function(i, post) {
         
-        var postpreview = $("<div>", {
+        var postpreview = $("<div class='card card-1'>", {
             class: "post-preview"
         }).hide();
         var link = $("<a>", {
@@ -30,7 +30,7 @@ $.get("/post", function(posts) {
         $(h4).appendTo(link);
         $(link).appendTo(postpreview);
         $(p).appendTo(postpreview);
-        $(postpreview).append("<hr>");
+        $(postpreview).append("");
 
         $(postpreview).appendTo("#posts").fadeIn("slow");
     });
