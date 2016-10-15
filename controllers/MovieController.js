@@ -1,6 +1,38 @@
 var httpModule = require("http");
 var Movie = require("../models/Movie");
-var Post = require("../models/Post");
+
+var validation = {
+    "id": {
+        notEmpty: true,
+        isInt: {
+            errorMessage: "Movie ID must be a number"
+        },
+        isLength: {
+            options: [{min: 5, max: 10}],
+            errorMessage: "Movie ID must be at least 5 digits"
+        },
+        errorMessage: "Invalid movie ID"
+    },
+    "title": {
+        notEmpty: true,
+        errorMessage: "Invalid movie title"
+    },
+    "voteAvg": {
+        optional: true,
+        isNumeric: true,
+        errorMessage: "Invalid vote average"
+    },
+    "poster": {
+        optional: true,
+        isURL: true,
+        errorMessage: "Invalid poster path"
+    },
+    "bg": {
+        optional: true,
+        isURL: true,
+        errorMessage: "Invalid background path"
+    }
+};
 
 exports.show = function(req, res) {
     Movie.findOne({id: req.params.mv_id}, function(err, movie) {
@@ -25,51 +57,75 @@ exports.showAll = function(req, res) {
 }
 
 exports.create = function(req, res) {
-    var movie = new Movie({
-        id: req.body.id,
-        title: req.body.title,
-        desc: req.body.desc,
-        genre: req.body.genre,
-        voteAvg: req.body.voteAvg,
-        poster: req.body.poster,
-        bg: req.body.bg
-    });
 
-    movie.save(function(err) {
-        if (err) {
-            console.log(err);
-            res.json({error: "Could not create: " + req.body.title});
-        }
+    req.check(validation);
+    
+    var errors = req.validationErrors();
 
-        res.json({success: "Successfully created: " + movie.title});
-    });
-}
+    if (errors) {
+        req.session.errors = errors;
+        req.session.success = false;
+        res.json({success: req.session.success, errors: req.session.errors})
+    }
+    else {
+        req.session.success = true
 
-exports.update = function(req, res) {
-    Movie.findOne({id: req.params.mv_id}, function(err, movie) {
-        if (err) {
-            console.log(err);
-            res.json({error: "Could not find movie with the id: " + req.params.mv_id});
-        }
-
-        console.log(movie);
-
-        movie.title = req.body.title;
-        movie.desc = req.body.desc;
-        //movie.genre = req.body.genre;
-        movie.voteAvg = req.body.voteAvg;
-        movie.poster = req.body.poster;
-        movie.bg = req.body.bg;
+        var movie = new Movie({
+            id: req.body.id,
+            title: req.body.title,
+            desc: req.body.desc,
+            genre: req.body.genre,
+            voteAvg: req.body.voteAvg,
+            poster: req.body.poster,
+            bg: req.body.bg
+        });
 
         movie.save(function(err) {
             if (err) {
                 console.log(err);
-                res.json({error: "Could not update " + movie.title});
+                req.session.errors = err;
+                req.session.success = false;
             }
 
-            res.json({success: "Successfully updated " + movie.title});
+            res.json({success: req.session.success, errors: req.session.errors});
+        });
+    }
+}
+
+exports.update = function(req, res) {
+
+    req.check(validation);
+    var errors = req.validationErrors();
+
+    if (errors) {
+        res.json({success: false, errors: errors});
+    }
+    else {
+        Movie.findOne({id: req.params.mv_id}, function(err, movie) {
+            if (err) {
+                console.log(err);
+                res.json({error: "Could not find movie with the id: " + req.params.mv_id});
+            }
+
+            console.log(movie);
+
+            movie.title = req.body.title;
+            movie.desc = req.body.desc;
+            //movie.genre = req.body.genre;
+            movie.voteAvg = req.body.voteAvg;
+            movie.poster = req.body.poster;
+            movie.bg = req.body.bg;
+
+            movie.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    res.json({error: "Could not update " + movie.title});
+                }
+
+                res.json({success: "Successfully updated " + movie.title});
+            })
         })
-    })
+    }
 }
 
 exports.delete = function(req, res) {
