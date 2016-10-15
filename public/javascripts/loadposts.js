@@ -30,7 +30,6 @@ $.get("/post", function(posts) {
         $(h4).appendTo(link);
         $(link).appendTo(postpreview);
         $(p).appendTo(postpreview);
-        $(postpreview).append("");
 
         $(postpreview).appendTo("#posts").fadeIn("slow");
     });
