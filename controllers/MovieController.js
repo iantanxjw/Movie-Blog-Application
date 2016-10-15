@@ -23,12 +23,10 @@ var validation = {
         errorMessage: "Invalid vote average"
     },
     "poster": {
-        optional: true,
         isURL: true,
         errorMessage: "Invalid poster path"
     },
     "bg": {
-        optional: true,
         isURL: true,
         errorMessage: "Invalid background path"
     }
