@@ -22,3 +22,12 @@ Contributors
 * Nancy
 * Ivan
 * Anthony (the biggest noob), Plox 
+
+Plugins
+--------------------------------
+* [notifyjs](https://notifyjs.com)
+* [express-validator](https://github.com/ctavan/express-validator)
+* [express-session](https://github.com/expressjs/session)
+* [dotenv](https://www.npmjs.com/package/dotenv)
+* [nodemon](https://github.com/remy/nodemon)
+* [mongoose](http://mongoosejs.com/)
