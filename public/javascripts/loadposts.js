@@ -1,7 +1,7 @@
 $.get("/post", function(posts) {
     $.each(posts, function(i, post) {
         
-        var postpreview = $("<br><div class='card card-1'>", {
+        var postpreview = $("<div class='card card-1'>", {
             class: "post-preview"
         }).hide();
         var link = $("<a>", {
