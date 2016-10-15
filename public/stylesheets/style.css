@@ -169,7 +169,16 @@ body {
   height: auto;
   margin: 1rem;
   position: relative;
+}
 
+.card a {
+  color: #333;
+  transition: all 0.3s;
+}
+
+.card a:hover {
+  color: #0085a1;
+  text-decoration: none;
 }
 
 .card-1 {
