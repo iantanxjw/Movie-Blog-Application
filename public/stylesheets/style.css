@@ -11,7 +11,8 @@ h1 {
   margin:auto;
   /*font-family: 'Bungee Inline', cursive;
   */
-  font-family: 'Bungee Shade', cursive;
+  color: #eeeeee;
+  font-family: 'Hammersmith One', Serif;
 }
 
 label {
