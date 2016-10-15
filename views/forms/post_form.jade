@@ -1,6 +1,7 @@
 form(action="/post", method="post")#create-post
     .col-xs-12.col-sm-12.col-md-12
         .form-group
+            br
             label(for="title") Post title:
             input(type="text", name="title")
     .col-xs-12.col-sm-12.col-md-12
@@ -13,4 +14,4 @@ form(action="/post", method="post")#create-post
             input(type="text", name="author")
     .col-xs-12.col-sm-12.col-md-12
         .form-group
-            button(type="submit") Submit
+            button.btn-primary(type="submit") Submit
