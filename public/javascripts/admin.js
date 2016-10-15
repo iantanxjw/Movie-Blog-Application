@@ -17,9 +17,9 @@ $(function() {
         event.preventDefault();
         $(this).fadeOut("slow");
         
-        $.post($(this).prop("action"), function(data) {
+        $.post($(this).prop("action"), {title: $("input[name=title]").val(), author: $("input[name=author]").val(), mv_id: $("select[name=mv_id]").val()}, function(data) {
             $(".show-form").fadeIn("slow");
-            $("form").fadeIn("slow");
+            $("form").fadeOut("slow");
             $("form").parent("div").append(data.success);
         }, "json");
     });
