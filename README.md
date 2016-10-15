@@ -9,7 +9,11 @@ How do I get started with this shiz?
 1. Pull down the project
 2. Run: `npm update`
 3. Create a `.env` file in your project dir
-4. Add the add the stuff from `.env.example` into your `.env` - be sure to change the values!
+4. Copy everything from .env.example to your new .env
+5. The only lines you need to change are: TMDB_API_KEY, DB_HOST, DB_PORT, DB_NAME
+6. You can get the api key from part a in your .env
+7. Create a database in robomongo call it something and then put that something in DB_NAME
+8. Default port is 27017 and default host is 127.0.0.1 unless you change them or are using Mongolab
 
 Contributors
 --------------------------------
