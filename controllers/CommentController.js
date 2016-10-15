@@ -1,49 +1,78 @@
 var Comment = require("../models/Comment");
 var Reply = require("../models/Reply");
+var validation = {
+    "author": {
+        notEmpty: true,
+        errorMessage: "Invalid author"
+    },
+    "text": {
+        notEmpty: true,
+        isLength: {
+            options: [{min: 5, max: 500}],
+            errorMessage: "Comments must be between 5 and 500 characters"
+        },
+        errorMessage: "Invalid comment"
+    },
+    "post_id": {
+        notEmpty: true,
+        errorMessage: "Invalid post"
+    }
+}
 
 exports.create = function(req, res) {
-    var comment = new Comment({
-        author: req.body.author,
-        text: req.body.text,
-        post_id: req.body.post_id
-    });
+    req.check(validation);
+    var errors = req.validationErrors();
 
-    // create a reply if it's a reply to a comment
-    if (req.body.parentComment != null) {
-        var reply = new Reply({
-            comment_id: req.body.parentComment
+    if (errors) {
+        res.json({success: false, errors: errors});
+    }
+    else {
+        var comment = new Comment({
+            author: req.body.author,
+            text: req.body.text,
+            post_id: req.body.post_id
         });
 
-        // now find the parent comment and update it with this childs id
-        Comment.findById(req.body.parentComment, function(err, parentComment) {
-            if (err) {
-                console.log(err);
-            }
+        // create a reply if it's a reply to a comment
+        if (req.body.parentComment != null) {
+            var reply = new Reply({
+                comment_id: req.body.parentComment
+            });
 
-            console.log(parentComment);
-
-            parentComment.reply_id = reply._id;
-            parentComment.save(function(err) {
+            // now find the parent comment and update it with this childs id
+            Comment.findById(req.body.parentComment, function(err, parentComment) {
                 if (err) {
                     console.log(err);
                 }
-            });
-        });
 
-        reply.save(function(err) {
+                console.log(parentComment);
+
+                parentComment.reply_id = reply._id;
+                parentComment.save(function(err) {
+                    if (err) {
+                        console.log(err);
+                        res.json({errors: err});
+                    }
+                });
+            });
+
+            reply.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    res.json({errors: err});
+                }
+            });
+        }
+
+        comment.save(function(err) {
             if (err) {
                 console.log(err);
+                res.json({errors: err});
             }
         });
+
+        res.json({success: "Comment created successfully"});
     }
-
-    comment.save(function(err) {
-        if (err) {
-            console.log(err);
-        }
-    });
-
-    res.json({success: "Comment created successfully"});
 }
 
 exports.delete = function(req, res) {
