@@ -23,8 +23,9 @@ Contributors
 * Ivan
 * Anthony (the biggest noob), Plox 
 
-Plugins
+Plugins & API
 --------------------------------
+* [TMDB](https://www.themoviedb.org)
 * [notifyjs](https://notifyjs.com)
 * [express-validator](https://github.com/ctavan/express-validator)
 * [express-session](https://github.com/expressjs/session)
