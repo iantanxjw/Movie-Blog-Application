@@ -1,5 +1,5 @@
 var Comment = require("../models/Comment");
-var Reply = require("../models/Reply");
+
 var validation = {
     "author": {
         notEmpty: true,
@@ -16,6 +16,9 @@ var validation = {
     "post_id": {
         notEmpty: true,
         errorMessage: "Invalid post"
+    },
+    "parent_comment": {
+        optional: true
     }
 }
 
@@ -35,39 +38,9 @@ exports.create = function(req, res) {
         var comment = new Comment({
             author: req.body.author,
             text: req.body.text,
-            post_id: req.body.post_id
+            post_id: req.body.post_id,
+            parent_comment: req.body.parent_comment
         });
-
-        // create a reply if it's a reply to a comment
-        if (req.body.parentComment != null) {
-            var reply = new Reply({
-                comment_id: req.body.parentComment
-            });
-
-            // now find the parent comment and update it with this childs id
-            Comment.findById(req.body.parentComment, function(err, parentComment) {
-                if (err) {
-                    console.log(err);
-                }
-
-                console.log(parentComment);
-
-                parentComment.reply_id = reply._id;
-                parentComment.save(function(err) {
-                    if (err) {
-                        console.log(err);
-                        res.json({errors: err});
-                    }
-                });
-            });
-
-            reply.save(function(err) {
-                if (err) {
-                    console.log(err);
-                    res.json({errors: err});
-                }
-            });
-        }
 
         comment.save(function(err) {
             if (err) {
@@ -85,7 +58,7 @@ exports.delete = function(req, res) {
     Comment.findById(req.params.comment_id, function(err, comment) {
         if (err) {
             console.log(err);
-            res.json({message: "Could not delete comment with the id: " + req.params.comment_id});
+            res.json({errors: err});
         }
 
         comment.author = "[removed]";
@@ -94,10 +67,10 @@ exports.delete = function(req, res) {
         comment.save(function(err) {
             if (err) {
                 console.log(err);
-                res.json({error: "Could not delete comment with the id: " + req.params.comment_id});
+                res.json({errors: err});
             }
 
-            res.json({success: "Successfully deleted comment"});
+            res.json({success: "Comment successfully deleted"});
         })
     })
 }
@@ -106,7 +79,7 @@ exports.findCommentsForPost = function(req, res) {
     Comment.find({post_id: req.params.comment_id}, function(err, comments) {
         if (err) {
             console.log(err);
-            res.json({error: "Could not find any comments for: " + req.params.comment_id});
+            res.json({errors: err});
         }
 
         res.json(comments);
