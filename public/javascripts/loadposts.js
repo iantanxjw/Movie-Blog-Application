@@ -31,14 +31,8 @@ $.get("/post", function(posts) {
             $.each(comments, function(i, comment) {
                 $(commentsdiv).append(
                     "<div><p>" + comment.text + "</p>" +
-                    "<p>" + comment.author + "</p>" +
-                    "<button class='load_form'>Reply</button>" +
-                    "<div class='form'></div>"
-
-                );
+                    "<p>" + comment.author + "</p>");
             });
-            $(commentsdiv).append("<button class='load_form'>Add Comment</button>" +
-                "<div class='form'></div>");
         });
 
         var postpreview = $("<div>", {
@@ -56,6 +50,25 @@ $.get("/post", function(posts) {
             html: "Created by " + post.author + " on " + post.createdAt
         });
 
+        var button = $("<button>", {
+            class: "load_form",
+            html: "Comment..."
+        });
+
+        var form = "<div class='form'>" +
+            "<h3>Leave a comment</h3>" +
+            "<form id='comment' action='comment/' method=POST class='form'>" +
+            "<input name='post_id' type='hidden' value='" + post._id + "'>" +
+
+            "<label for='author'>Your name </label>" +
+            "<input name='author' type='text' required>" +
+
+            "<label for='text' class='required'>Your message</label>" +
+            "<textarea name='text' class='txtarea' rows='10' tabindex='4' required></textarea>" +
+
+            "<input type='submit'>" +
+            "</form></div>";
+
         $(poster).appendTo(expand);
         $(commentsdiv).appendTo(expand);
 
@@ -64,6 +77,8 @@ $.get("/post", function(posts) {
         $(desc).appendTo(link);
         $(link).appendTo(postpreview);
         $(p).appendTo(postpreview);
+        $(button).appendTo(expand);
+        $(form).appendTo(expand);
         $(expand).appendTo(postpreview);
 
         $(postpreview).appendTo("#posts").fadeIn("slow");
@@ -100,6 +115,19 @@ $.get("/post", function(posts) {
             '</div>');
         // console.log($(this).data("id"));
     });
+
+    $(".load_form").on("click", function() {
+        $(this).closest(".post-preview").find(".form").slideToggle(500);
+    });
+
+    $(".form").on("submit", function(event) {
+        event.preventDefault();
+        console.log($(".txtarea").val());
+
+        $.post($(this).prop("action"), {author: $(this).find("input[name=author]").val(), post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val()}, function(data) {
+            console.log(data);
+        })
+    })
 
 
 }, "json");

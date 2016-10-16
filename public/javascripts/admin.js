@@ -13,7 +13,7 @@ $(function() {
         });
     })
 
-    $("form").on("submit", function(event) {
+    $("#create-post").on("submit", function(event) {
         event.preventDefault();
         $(this).fadeOut("slow");
         
