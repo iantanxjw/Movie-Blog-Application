@@ -4,16 +4,19 @@ $.get("/post", function(posts) {
         var h3 = $("<h3>", {
             class: "post-subtitle",
         });
-        var desc = $("<p>");
+        var desc = $("<p>", {
+            class: "post-description",
+        });
         var expand = $("<div>", {
             class: "post-expand"
         });
-        var poster = $("<img>")
+        var poster = $("<img>");
         var commentsdiv = $("<div>", {
             class: "comments"
         });
 
         $.get("/movie/" + post.mv_id, function(movie) {
+            $(h3).attr( "data-id",  movie.id);
             $(h3).html(movie.title);
             $(desc).html(movie.desc.substr(0, 100) + "...");
             $(poster).prop("src", "http://" + movie.poster);
@@ -24,10 +27,15 @@ $.get("/post", function(posts) {
             $.each(comments, function(i, comment) {
                 $(commentsdiv).append(
                     "<div><p>" + comment.text + "</p>" +
-                    "<p>" + comment.author + "</p>"
+                    "<p>" + comment.author + "</p>" +
+                    "<button class='load_form'>Reply</button>" +
+                    "<div class='form'></div>"
+
                 );
-            })
-        })
+            });
+            $(commentsdiv).append("<button class='load_form'>Add Comment</button>" +
+                "<div class='form'></div>");
+        });
 
         var postpreview = $("<div>", {
             class: "post-preview card card-1"
@@ -55,10 +63,32 @@ $.get("/post", function(posts) {
         $(expand).appendTo(postpreview);
 
         $(postpreview).appendTo("#posts").fadeIn("slow");
+
     });
 
-    $(".post-preview").on("click", function() {
+    $(".post-link").on("click", function() {
         console.log("fucked");
-        $(this).find(".post-expand").slideToggle(500);
+        $(this).closest(".post-preview").find(".post-expand").slideToggle(500);
     });
+
+    $(".load_form").on("click", function() {
+        $('.form').html('<div id="respond">'+
+            '<div class="centered">'+
+            '<h3>Leave a Comment</h3><br/>'+
+            '<form id="commentform" action="#" method="post">'+
+            '<label for="comment_author" class="required">Your name</label>'+
+            '<input id="comment_author" type="text" name="comment_author" value="" tabindex="1" required="required"/><br/>'+
+            '<label for="email" class="required">Your email</label>'+
+            '<input id="email" type="email" name="email" value="" tabindex="2" required="required"/><br/>'+
+            '<label for="comment" class="required">Your message</label>'+
+            '<textarea id="comment" name="comment" rows="10" tabindex="4" required="required"></textarea><br/> </form>'+
+            '<input id="comment_post_ID" type="hidden" name="comment_post_ID" value="1"/>'+
+            '<button name="submit" type="submit" value="Submit comment" class="btn">Submit Comment</button>'+
+        '</div>'+
+        '</div>');
+        // console.log($(this).data("id"));
+    });
+
+
 }, "json");
+
