@@ -51,7 +51,7 @@ $.get("/post", function(posts) {
             html: "Comment..."
         });
 
-        var form = "<div class='form'>" +
+        var form = "" +
             "<h3>Leave a comment</h3>" +
             "<form id='comment' action='comment/' method=POST class='form'>" +
             "<input name='post_id' type='hidden' value='" + post._id + "'>" +
@@ -63,7 +63,7 @@ $.get("/post", function(posts) {
             "<textarea name='text' class='txtarea' rows='10' tabindex='4' required></textarea>" +
 
             "<input type='submit'>" +
-            "</form></div>";
+            "</form>";
 
         $(poster).appendTo(expand);
         $(commentsdiv).appendTo(expand);
@@ -94,9 +94,17 @@ $.get("/post", function(posts) {
         event.preventDefault();
         console.log($(".txtarea").val());
 
-        $.post($(this).prop("action"), {author: $(this).find("input[name=author]").val(), post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val()}, function(data) {
-            console.log(data);
-        })
+        $.post($(this).prop("action"), {author: $(this).find("input[name=author]").val(),
+            post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val()}, function(data) {
+            if (data.success === false) {
+                $.each(data.errors, function(index, error) {
+                    $.notify(error.msg, "error");
+                });
+            }
+            else {
+                $.notify(data.success, "success");
+            }
+        }, "json");
     })
 
 
