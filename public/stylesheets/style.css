@@ -240,5 +240,9 @@ body {
   color: white;
 }
 
+.form {
+  display: none;
+}
+
 
 
