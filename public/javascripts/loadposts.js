@@ -15,8 +15,12 @@ $.get("/post", function(posts) {
             class: "comments"
         });
 
+        var link = $("<a>", {
+            class: "post-link"
+        });
+
         $.get("/movie/" + post.mv_id, function(movie) {
-            $(h3).attr( "data-id",  movie.id);
+            $(link).attr("data-id",  movie.id);
             $(h3).html(movie.title);
             $(desc).html(movie.desc.substr(0, 100) + "...");
             $(poster).prop("src", "http://" + movie.poster);
@@ -29,50 +33,20 @@ $.get("/post", function(posts) {
                     "<div><p>" + comment.text + "</p>" +
                     "<p>" + comment.author + "</p>" +
                     "<button class='load_form'>Reply</button>" +
-                    "<div class='form'>" +
-                    '<hr><div id="respond">' +
-                    '<div class="centered">' +
-                    '<h3>Leave a Comment</h3><br/>' +
-                    '<form id="commentform" action="#" method="post">' +
-                    '<label for="comment_author" class="required">Your name</label>' +
-                    '<input id="comment_author" type="text" name="comment_author" value="" tabindex="1" required="required"/><br/>' +
-                    '<label for="email" class="required">Your email</label>' +
-                    '<input id="email" type="email" name="email" value="" tabindex="2" required="required"/><br/>' +
-                    '<label for="comment" class="required">Your message</label>' +
-                    '<textarea id="comment" name="comment" rows="10" tabindex="4" required="required"></textarea><br/> </form>' +
-                    '<input id="comment_post_ID" type="hidden" name="comment_post_ID" value="1"/>' +
-                    '<button name="submit" type="submit" value="Submit comment" class="btn">Submit Comment</button>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>'
+                    "<div class='form'></div>"
 
                 );
             });
             $(commentsdiv).append("<button class='load_form'>Add Comment</button>" +
-                "<div class='form'>" +
-                '<hr><div id="respond">' +
-                '<div class="centered">' +
-                '<h3>Leave a Comment</h3><br/>' +
-                '<form id="commentform" action="#" method="post">' +
-                '<label for="comment_author" class="required">Your name</label>' +
-                '<input id="comment_author" type="text" name="comment_author" value="" tabindex="1" required="required"/><br/>' +
-                '<label for="email" class="required">Your email</label>' +
-                '<input id="email" type="email" name="email" value="" tabindex="2" required="required"/><br/>' +
-                '<label for="comment" class="required">Your message</label>' +
-                '<textarea id="comment" name="comment" rows="10" tabindex="4" required="required"></textarea><br/> </form>' +
-                '<input id="comment_post_ID" type="hidden" name="comment_post_ID" value="1"/>' +
-                '<button name="submit" type="submit" value="Submit comment" class="btn">Submit Comment</button>' +
-                '</div>' +
-                '</div>' +
-                '</div>');
+                "<div class='form'></div>");
         });
 
         var postpreview = $("<div>", {
             class: "post-preview card card-1"
         }).hide();
-        var link = $("<a>", {
-            class: "post-link"
-        });
+
+        //console.log(movieId);
+
         var h2 = $("<h2>", {
             class: "post-title",
             html: post.title
@@ -99,8 +73,35 @@ $.get("/post", function(posts) {
     $(".post-link").on("click", function() {
         console.log("fucked");
         $(this).closest(".post-preview").find(".post-expand").slideToggle(500);
+        var mv_id = $(this).data("id");
+
+        $.get("/movie/" + mv_id, function(movie) {
+
+            $(this).find(".post-description").html(movie.desc);
+
+        }, "json");
+
+    });
+
+    $(".load_form").on("click", function() {
+        $('.form').html('<div id="respond">'+
+            '<div class="centered">'+
+            '<h3>Leave a Comment</h3><br/>'+
+            '<form id="commentform" action="#" method="post">'+
+            '<label for="comment_author" class="required">Your name</label>'+
+            '<input id="comment_author" type="text" name="comment_author" value="" tabindex="1" required="required"/><br/>'+
+            '<label for="email" class="required">Your email</label>'+
+            '<input id="email" type="email" name="email" value="" tabindex="2" required="required"/><br/>'+
+            '<label for="comment" class="required">Your message</label>'+
+            '<textarea id="comment" name="comment" rows="10" tabindex="4" required="required"></textarea><br/> </form>'+
+            '<input id="comment_post_ID" type="hidden" name="comment_post_ID" value="1"/>'+
+            '<button name="submit" type="submit" value="Submit comment" class="btn">Submit Comment</button>'+
+            '</div>'+
+            '</div>');
+        // console.log($(this).data("id"));
     });
 
 
 }, "json");
+
 
