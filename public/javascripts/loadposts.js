@@ -27,7 +27,16 @@ $.get("/post", function(posts) {
             $.each(comments, function(i, comment) {
                 $(commentsdiv).append(
                     "<div><p>" + comment.text + "</p>" +
-                    "<p>" + comment.author + "</p>");
+                    "<p>Author: " + comment.author + "</p>"
+                );
+
+                var reply = $("<button>", {
+                    class: "comment_reply",
+                    html: "Reply"
+                });
+                $(reply).data("id", comment._id);
+
+                $(commentsdiv).append(reply);
             });
         });
 
@@ -54,6 +63,7 @@ $.get("/post", function(posts) {
         var form = "" +
             "<h3>Leave a comment</h3>" +
             "<form id='comment' action='comment/' method=POST class='form'>" +
+            "<input name='parent_comment' type='hidden'>" +
             "<input name='post_id' type='hidden' value='" + post._id + "'>" +
 
             "<label for='author'>Your name </label>" +
@@ -90,12 +100,19 @@ $.get("/post", function(posts) {
         $(this).closest(".post-preview").find(".form").slideToggle(500);
     });
 
+    $(document).on("click", ".comment_reply", function() {
+        console.log($(this).data("id"));
+        var form = $(this).closest(".post-preview").find(".form");
+        $(form).slideToggle(500);
+        $(form).find("input[name=parent_comment]").val($(this).data("id"));
+    });
+
     $(".form").on("submit", function(event) {
         event.preventDefault();
         console.log($(".txtarea").val());
 
         $.post($(this).prop("action"), {author: $(this).find("input[name=author]").val(),
-            post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val()}, function(data) {
+            post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val(), parent_comment: $(this).find("input[name=parent_comment]").val()}, function(data) {
             if (data.success === false) {
                 $.each(data.errors, function(index, error) {
                     $.notify(error.msg, "error");
