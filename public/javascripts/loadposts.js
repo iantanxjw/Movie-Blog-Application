@@ -27,44 +27,8 @@ $.get("/post", function(posts) {
             $.each(comments, function(i, comment) {
                 $(commentsdiv).append(
                     "<div><p>" + comment.text + "</p>" +
-                    "<p>" + comment.author + "</p>" +
-                    "<button class='load_form'>Reply</button>" +
-                    "<div class='form'>" +
-                    '<hr><div id="respond">' +
-                    '<div class="centered">' +
-                    '<h3>Leave a Comment</h3><br/>' +
-                    '<form id="commentform" action="#" method="post">' +
-                    '<label for="comment_author" class="required">Your name</label>' +
-                    '<input id="comment_author" type="text" name="comment_author" value="" tabindex="1" required="required"/><br/>' +
-                    '<label for="email" class="required">Your email</label>' +
-                    '<input id="email" type="email" name="email" value="" tabindex="2" required="required"/><br/>' +
-                    '<label for="comment" class="required">Your message</label>' +
-                    '<textarea id="comment" name="comment" rows="10" tabindex="4" required="required"></textarea><br/> </form>' +
-                    '<input id="comment_post_ID" type="hidden" name="comment_post_ID" value="1"/>' +
-                    '<button name="submit" type="submit" value="Submit comment" class="btn">Submit Comment</button>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>'
-
-                );
+                    "<p>" + comment.author + "</p>");
             });
-            $(commentsdiv).append("<button class='load_form'>Add Comment</button>" +
-                "<div class='form'>" +
-                '<hr><div id="respond">' +
-                '<div class="centered">' +
-                '<h3>Leave a Comment</h3><br/>' +
-                '<form id="commentform" action="#" method="post">' +
-                '<label for="comment_author" class="required">Your name</label>' +
-                '<input id="comment_author" type="text" name="comment_author" value="" tabindex="1" required="required"/><br/>' +
-                '<label for="email" class="required">Your email</label>' +
-                '<input id="email" type="email" name="email" value="" tabindex="2" required="required"/><br/>' +
-                '<label for="comment" class="required">Your message</label>' +
-                '<textarea id="comment" name="comment" rows="10" tabindex="4" required="required"></textarea><br/> </form>' +
-                '<input id="comment_post_ID" type="hidden" name="comment_post_ID" value="1"/>' +
-                '<button name="submit" type="submit" value="Submit comment" class="btn">Submit Comment</button>' +
-                '</div>' +
-                '</div>' +
-                '</div>');
         });
 
         var postpreview = $("<div>", {
@@ -82,6 +46,25 @@ $.get("/post", function(posts) {
             html: "Created by " + post.author + " on " + post.createdAt
         });
 
+        var button = $("<button>", {
+            class: "load_form",
+            html: "Comment..."
+        });
+
+        var form = "<div class='form'>" +
+            "<h3>Leave a comment</h3>" +
+            "<form id='comment' action='comment/' method=POST class='form'>" +
+            "<input name='post_id' type='hidden' value='" + post._id + "'>" +
+
+            "<label for='author'>Your name </label>" +
+            "<input name='author' type='text' required>" +
+
+            "<label for='text' class='required'>Your message</label>" +
+            "<textarea name='text' class='txtarea' rows='10' tabindex='4' required></textarea>" +
+
+            "<input type='submit'>" +
+            "</form></div>";
+
         $(poster).appendTo(expand);
         $(commentsdiv).appendTo(expand);
 
@@ -90,6 +73,8 @@ $.get("/post", function(posts) {
         $(desc).appendTo(link);
         $(link).appendTo(postpreview);
         $(p).appendTo(postpreview);
+        $(button).appendTo(expand);
+        $(form).appendTo(expand);
         $(expand).appendTo(postpreview);
 
         $(postpreview).appendTo("#posts").fadeIn("slow");
@@ -100,6 +85,19 @@ $.get("/post", function(posts) {
         console.log("fucked");
         $(this).closest(".post-preview").find(".post-expand").slideToggle(500);
     });
+
+    $(".load_form").on("click", function() {
+        $(this).closest(".post-preview").find(".form").slideToggle(500);
+    });
+
+    $(".form").on("submit", function(event) {
+        event.preventDefault();
+        console.log($(".txtarea").val());
+
+        $.post($(this).prop("action"), {author: $(this).find("input[name=author]").val(), post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val()}, function(data) {
+            console.log(data);
+        })
+    })
 
 
 }, "json");
