@@ -29,9 +29,7 @@ $.get("/post", function(posts) {
         $.get("/comment/" + post._id, function(comments) {
             // need to check if child comment and append to parent
             $.each(comments, function(i, comment) {
-                $(commentsdiv).append(
-                    "<div><p>" + comment.text + "</p>" +
-                    "<p>" + comment.author + "</p>");
+                $(commentsdiv).append("<p><strong>" + comment.author + ": </strong>" + comment.text + "</p>");
             });
         });
 
@@ -51,22 +49,22 @@ $.get("/post", function(posts) {
         });
 
         var button = $("<button>", {
-            class: "load_form",
+            class: "load_form btn btn-warning",
             html: "Comment..."
         });
 
-        var form = "<div class='form'>" +
-            "<h3>Leave a comment</h3>" +
+        var form = "<hr><div class='form' style='margin: 90px;'>" +
+            "<div class='form-group'><h3>Leave a comment</h3>" +
             "<form id='comment' action='comment/' method=POST class='form'>" +
-            "<input name='post_id' type='hidden' value='" + post._id + "'>" +
+            "<input class='form-control' name='post_id' type='hidden' value='" + post._id + "'></div>" +
 
-            "<label for='author'>Your name </label>" +
-            "<input name='author' type='text' required>" +
+            "<div class='form-group'><label for='author'>Your name </label>" +
+            "<input class='form-control' name='author' type='text' required></div>" +
 
-            "<label for='text' class='required'>Your message</label>" +
-            "<textarea name='text' class='txtarea' rows='10' tabindex='4' required></textarea>" +
+            "<div class='form-group'><label for='text' class='required'>Your message</label>" +
+            "<textarea name='text' class='txtarea form-control' rows='10' tabindex='4' required></textarea></div>" +
 
-            "<input type='submit'>" +
+            "<input class='btn btn-primary' type='submit'>" +
             "</form></div>";
 
         $(poster).appendTo(expand);
@@ -96,24 +94,6 @@ $.get("/post", function(posts) {
 
         }, "json");
 
-    });
-
-    $(".load_form").on("click", function() {
-        $('.form').html('<div id="respond">'+
-            '<div class="centered">'+
-            '<h3>Leave a Comment</h3><br/>'+
-            '<form id="commentform" action="#" method="post">'+
-            '<label for="comment_author" class="required">Your name</label>'+
-            '<input id="comment_author" type="text" name="comment_author" value="" tabindex="1" required="required"/><br/>'+
-            '<label for="email" class="required">Your email</label>'+
-            '<input id="email" type="email" name="email" value="" tabindex="2" required="required"/><br/>'+
-            '<label for="comment" class="required">Your message</label>'+
-            '<textarea id="comment" name="comment" rows="10" tabindex="4" required="required"></textarea><br/> </form>'+
-            '<input id="comment_post_ID" type="hidden" name="comment_post_ID" value="1"/>'+
-            '<button name="submit" type="submit" value="Submit comment" class="btn">Submit Comment</button>'+
-            '</div>'+
-            '</div>');
-        // console.log($(this).data("id"));
     });
 
     $(".load_form").on("click", function() {
