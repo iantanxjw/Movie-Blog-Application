@@ -52,9 +52,8 @@ $.get("/post", function(posts) {
             class: "load_form btn btn-warning",
             html: "Comment..."
         });
-
-        var form = "<hr><div class='form' style='margin: 90px;'>" +
-            "<div class='form-group'><h3>Leave a comment</h3>" +
+        var form = "" +
+            "<hr><div class='form form-group' style='margin: 90px;'><h3>Leave a comment</h3>" +
             "<form id='comment' action='comment/' method=POST class='form'>" +
             "<input class='form-control' name='post_id' type='hidden' value='" + post._id + "'></div>" +
 
@@ -63,7 +62,7 @@ $.get("/post", function(posts) {
 
             "<div class='form-group'><label for='text' class='required'>Your message</label>" +
             "<textarea name='text' class='txtarea form-control' rows='10' tabindex='4' required></textarea></div>" +
-
+                
             "<input class='btn btn-primary' type='submit'>" +
             "</form></div>";
 
@@ -104,9 +103,17 @@ $.get("/post", function(posts) {
         event.preventDefault();
         console.log($(".txtarea").val());
 
-        $.post($(this).prop("action"), {author: $(this).find("input[name=author]").val(), post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val()}, function(data) {
-            console.log(data);
-        })
+        $.post($(this).prop("action"), {author: $(this).find("input[name=author]").val(),
+            post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val()}, function(data) {
+            if (data.success === false) {
+                $.each(data.errors, function(index, error) {
+                    $.notify(error.msg, "error");
+                });
+            }
+            else {
+                $.notify(data.success, "success");
+            }
+        }, "json");
     })
 
 

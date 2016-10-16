@@ -27,14 +27,14 @@ exports.create = function(req, res) {
     req.check(validation);
     var errors = req.validationErrors();
 
-    // sanitise user input
-    req.sanitize("author").escape().trim();
-    req.sanitize("text").escape();
-
     if (errors) {
         res.json({success: false, errors: errors});
     }
     else {
+        // sanitise user input
+        req.sanitize("author").escape().trim();
+        req.sanitize("text").escape();
+        
         var comment = new Comment({
             author: req.body.author,
             text: req.body.text,
