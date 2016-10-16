@@ -15,8 +15,12 @@ $.get("/post", function(posts) {
             class: "comments"
         });
 
+        var link = $("<a>", {
+            class: "post-link"
+        });
+
         $.get("/movie/" + post.mv_id, function(movie) {
-            $(h3).attr( "data-id",  movie.id);
+            $(link).attr("data-id",  movie.id);
             $(h3).html(movie.title);
             $(desc).html(movie.desc.substr(0, 100) + "...");
             $(poster).prop("src", "http://" + movie.poster);
@@ -25,17 +29,14 @@ $.get("/post", function(posts) {
         $.get("/comment/" + post._id, function(comments) {
             // need to check if child comment and append to parent
             $.each(comments, function(i, comment) {
-                $(commentsdiv).append(
-                    "<div><p>" + comment.text + "</p>" +
-                    "<p>Author: " + comment.author + "</p>"
-                );
+
+                $(commentsdiv).append("<div data-id='" + comment._id + "'><p><strong>" + comment.author + ": </strong>" + comment.text + "</p></div>");
 
                 var reply = $("<button>", {
                     class: "comment_reply",
                     html: "Reply"
                 });
                 $(reply).data("id", comment._id);
-
                 $(commentsdiv).append(reply);
             });
         });
@@ -43,9 +44,9 @@ $.get("/post", function(posts) {
         var postpreview = $("<div>", {
             class: "post-preview card card-1"
         }).hide();
-        var link = $("<a>", {
-            class: "post-link"
-        });
+
+        //console.log(movieId);
+
         var h2 = $("<h2>", {
             class: "post-title",
             html: post.title
@@ -56,23 +57,23 @@ $.get("/post", function(posts) {
         });
 
         var button = $("<button>", {
-            class: "load_form",
+            class: "load_form btn btn-warning",
             html: "Comment..."
         });
-
         var form = "" +
-            "<h3>Leave a comment</h3>" +
-            "<form id='comment' action='comment/' method=POST class='form'>" +
+            "<hr><div class='form form-group' style='margin: 90px;'><h3>Leave a comment</h3>" +
+            "<form action='comment/' method=POST>" +
+
             "<input name='parent_comment' type='hidden'>" +
-            "<input name='post_id' type='hidden' value='" + post._id + "'>" +
+            "<input class='form-control' name='post_id' type='hidden' value='" + post._id + "'>" +
 
-            "<label for='author'>Your name </label>" +
-            "<input name='author' type='text' required>" +
+            "<div class='form-group'><label for='author'>Your name </label>" +
+            "<input class='form-control' name='author' type='text' required></div>" +
 
-            "<label for='text' class='required'>Your message</label>" +
-            "<textarea name='text' class='txtarea' rows='10' tabindex='4' required></textarea>" +
-
-            "<input type='submit'>" +
+            "<div class='form-group'><label for='text' class='required'>Your message</label>" +
+            "<textarea name='text' class='txtarea form-control' rows='10' tabindex='4' required></textarea></div>" +
+                
+            "<input class='btn btn-primary' type='submit'>" +
             "</form>";
 
         $(poster).appendTo(expand);
@@ -94,6 +95,14 @@ $.get("/post", function(posts) {
     $(".post-link").on("click", function() {
         console.log("fucked");
         $(this).closest(".post-preview").find(".post-expand").slideToggle(500);
+        var mv_id = $(this).data("id");
+
+        $.get("/movie/" + mv_id, function(movie) {
+
+            $(this).find(".post-description").html(movie.desc);
+
+        }, "json");
+
     });
 
     $(".load_form").on("click", function() {
@@ -101,7 +110,6 @@ $.get("/post", function(posts) {
     });
 
     $(document).on("click", ".comment_reply", function() {
-        console.log($(this).data("id"));
         var form = $(this).closest(".post-preview").find(".form");
         $(form).slideToggle(500);
         $(form).find("input[name=parent_comment]").val($(this).data("id"));
@@ -109,7 +117,6 @@ $.get("/post", function(posts) {
 
     $(".form").on("submit", function(event) {
         event.preventDefault();
-        console.log($(".txtarea").val());
 
         $.post($(this).prop("action"), {author: $(this).find("input[name=author]").val(),
             post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val(), parent_comment: $(this).find("input[name=parent_comment]").val()}, function(data) {
@@ -126,4 +133,5 @@ $.get("/post", function(posts) {
 
 
 }, "json");
+
 
