@@ -115,11 +115,11 @@ $.get("/post", function(posts) {
         $(form).find("input[name=parent_comment]").val($(this).data("id"));
     });
 
-    $(".form").on("submit", function(event) {
+    $(".form > form").on("submit", function(event) {
         event.preventDefault();
 
         $.post($(this).prop("action"), {author: $(this).find("input[name=author]").val(),
-            post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val(), parent_comment: $(this).find("input[name=parent_comment]").val()}, function(data) {
+            post_id: $(this).find("input[name=post_id]").val(), text: $(this).find(".txtarea").val()}, function(data) {
             if (data.success === false) {
                 $.each(data.errors, function(index, error) {
                     $.notify(error.msg, "error");

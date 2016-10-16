@@ -18,16 +18,24 @@ $(function() {
         $(this).fadeOut("slow");
         
         $.post($(this).prop("action"), {title: $("input[name=title]").val(), author: $("input[name=author]").val(), mv_id: $("select[name=mv_id]").val()}, function(data) {
+            $.each($(this))
             $(".show-form").fadeIn("slow");
             $("form").fadeOut("slow");
-            $("form").parent("div").append(data.success);
+            if (data.success === false) {
+                $.each(data.errors, function(index, error) {
+                    $.notify(error.msg, "error");
+                });
+            }
+            else {
+                $.notify(data.success, "success");
+            }
         }, "json");
     });
 
     $("#update").click(function() {
         $.get("/movie/apiupdate", function(data) {
             // this doesn't fucking work because .save() is async fml
-            $("#update").notify(data);
+            //$("#update").notify(data);
         });
     })
 
