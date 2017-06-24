@@ -1,10 +1,10 @@
-WDA a2 part B
+Web Database Application Part 2 (Node.js)
 ============================================
 A Node.js project with Express.js, MongoDB, Jade, and a bunch of other modules.
 
 The project itself is a movie blogs website with the ability for guests and registered users to add comments to blog posts. Movies are obtained from the TMDB API.
 
-How do I get started with this shiz?
+How do I get started with this?
 ------------------------------------
 1. Pull down the project
 2. Run: `npm update`
@@ -18,10 +18,10 @@ How do I get started with this shiz?
 Contributors
 --------------------------------
 * Ben
-* Ian (the mightiest noob)
+* Ian
 * Nancy
 * Ivan
-* Anthony (the biggest noob), Plox 
+* Anthony
 
 Plugins & API
 --------------------------------
